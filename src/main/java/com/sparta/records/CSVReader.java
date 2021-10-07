@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CSVReader {
     private static CSVReader instance;
@@ -36,6 +38,11 @@ public class CSVReader {
 
     public List<Employee> getDuplicateRecords() {
         return duplicateRecords;
+    }
+
+    public List<Employee> getAllRecordsWithDuplicateID() {
+        return Stream.concat(uniqueRecords.stream(), getDuplicateRecords().stream())
+                .collect(Collectors.toList());
     }
 
     private void parseRecordsFromCSV() {
