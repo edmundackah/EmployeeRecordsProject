@@ -25,7 +25,7 @@ public class RegexValidator {
         return instance;
     }
 
-    public static boolean isValidEmployeeRecord(String[] data) throws EmployeeValidationException {
+    public boolean isValidEmployeeRecord(String[] data) throws EmployeeValidationException {
         //boolean validData = true;
         List<Boolean> validationResults = new ArrayList();
 
