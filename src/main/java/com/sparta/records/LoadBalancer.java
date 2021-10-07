@@ -8,10 +8,16 @@ public class LoadBalancer {
 
     private List<ThreadResponse> responses = new LinkedList<>();
 
-    public void distributeJobs() {
-
+    public static void createWorkers() {
+        //TODO: thread generators and response aggregator
+        //TODO: System wide logging
     }
 
+    public List<ThreadResponse> getResponses() {
+        //returns the responses from all threads after job completion
+        //empty by default
+        return responses;
+    }
 
     //creates a series of smaller lists from the main list
     private List<List<Employee>> getSlice() {

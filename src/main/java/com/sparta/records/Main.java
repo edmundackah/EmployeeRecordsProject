@@ -7,7 +7,6 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
         CSVReader csvReader = CSVReader.getInstance("src/main/EmployeeRecordsLarge.csv");
-        int cores = Runtime.getRuntime().availableProcessors();
 
         List<Employee> records = csvReader.getRecords();
 
