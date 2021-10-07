@@ -86,7 +86,7 @@ public class JDBCDriver {
         return ((System.nanoTime() - startTime) / 1000000);
     }
 
-    public void writeRecords(List<Employee> records) {
+    public ThreadResponse writeRecords(List<Employee> records) {
         int count  = 0;
         long startTime = System.nanoTime();
 
@@ -125,10 +125,9 @@ public class JDBCDriver {
             pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            System.out.println("Thread " + threadID + " wrote " + count + " records to the database in");
-            System.out.println("Thread " + threadID + " took " + timeElapsed(startTime) + " ms");
         }
+
+        return new ThreadResponse(threadID, count, timeElapsed(startTime));
     }
 
 }

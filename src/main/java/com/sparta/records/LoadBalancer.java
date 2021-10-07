@@ -1,15 +1,12 @@
 package com.sparta.records;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class LoadBalancer {
     //get the number of threads supported by the host system
     private static final int AVAILABLE_THREADS = Runtime.getRuntime().availableProcessors();
-    //object responsible for providing access to the CSV file
-    private static final CSVReader RECORDS = CSVReader.getInstance("src/main/EmployeeRecordsLarge.csv");
+
+    private List<ThreadResponse> responses = new LinkedList<>();
 
     public void distributeJobs() {
 
@@ -18,9 +15,12 @@ public class LoadBalancer {
 
     //creates a series of smaller lists from the main list
     private List<List<Employee>> getSlice() {
-        //records from the csv file including duplicates but with is Duplicate flag
+        //object responsible for providing access to the CSV file
+        //records from the csv file including duplicates but with isDuplicate flag set to 1
         //poorly formatted records are not in this list
-        List<Employee> list = RECORDS.getAllRecordsWithDuplicateID();
+        List<Employee> list = CSVReader
+                .getInstance("src/main/EmployeeRecordsLarge.csv")
+                .getAllRecordsWithDuplicateID();
 
         List<List<Employee>> slice = new ArrayList();
         final int numRecords = list.size();
