@@ -27,3 +27,7 @@ hs_err_pid*
 .idea/misc.xml
 .idea/runConfigurations.xml
 .idea/workspace.xml
+.idea/dataSources/8a43638c-c994-466a-aba9-8544432fab4f.xml
+.idea/dataSources/8a43638c-c994-466a-aba9-8544432fab4f/storage_v2/_src_/schema/main.uQUzAA.meta
+.idea/dataSources/fac2daec-1fef-4330-817a-64e86a2daef9.xml
+.idea/sqldialects.xml

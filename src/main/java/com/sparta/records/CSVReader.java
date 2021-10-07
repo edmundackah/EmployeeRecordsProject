@@ -4,26 +4,45 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class CSVReader {
     private static CSVReader instance;
+    private Set<Employee> uniqueRecords;
+    private List<Employee> employees, duplicateRecords;
 
-    private CSVReader() {
+    private String path;
+
+    private CSVReader(String path) {
+        this.path = path;
+        parseRecordsFromCSV();
     }
 
-    public static CSVReader getInstance() {
+    public static CSVReader getInstance(String path) {
         if (instance == null) {
-            instance = new CSVReader();
+            instance = new CSVReader(path);
         }
         return instance;
     }
 
-    public List<Employee> getEmployeeRecords(String path) {
-        List<Employee> employees = new ArrayList<>();
+    public Set<Employee> getUniqueRecords() {
+        return uniqueRecords;
+    }
+
+    public List<Employee> getRecords() {
+        return employees;
+    }
+
+    public List<Employee> getDuplicateRecords() {
+        return duplicateRecords;
+    }
+
+    private void findDuplicates() {
+
+    }
+
+    private void parseRecordsFromCSV() {
+        employees = new ArrayList<>();
 
         try (BufferedReader bf = new BufferedReader(new FileReader(path))) {
             String line;
@@ -51,6 +70,8 @@ public class CSVReader {
             e.printStackTrace();
         }
 
-        return employees;
+        //creating hashset
+        uniqueRecords = new HashSet();
+        uniqueRecords.addAll(employees);
     }
 }

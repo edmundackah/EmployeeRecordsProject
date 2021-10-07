@@ -9,6 +9,7 @@ public class Person {
     private char initial, gender;
     private Date dob;
 
+
     public Person(String title, String firstName, String lastName,
                   String email, char initial, char gender, String dob) throws ParseException {
         this.title = title == null ? "Mx" : title;
@@ -54,13 +55,11 @@ public class Person {
         return email;
     }
 
-    public char getInitial() {
-        return initial;
+    public String getInitial() {
+        return Character.toString(initial);
     }
 
-    public char getGender() {
-        return gender;
-    }
+    public String getGender() {return Character.toString(gender);}
 
     public Date getDob() {
         return dob;
