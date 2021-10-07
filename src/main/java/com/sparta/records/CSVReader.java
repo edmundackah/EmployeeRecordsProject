@@ -9,7 +9,8 @@ import java.util.*;
 public class CSVReader {
     private static CSVReader instance;
     private Set<Employee> uniqueRecords;
-    private List<Employee> employees, duplicateRecords;
+    private List<Employee> employees;
+    private List<Employee> duplicateRecords = new LinkedList();
 
     private String path;
 
@@ -35,10 +36,6 @@ public class CSVReader {
 
     public List<Employee> getDuplicateRecords() {
         return duplicateRecords;
-    }
-
-    private void findDuplicates() {
-
     }
 
     private void parseRecordsFromCSV() {
@@ -72,6 +69,15 @@ public class CSVReader {
 
         //creating hashset
         uniqueRecords = new HashSet();
-        uniqueRecords.addAll(employees);
+
+        //load records into sets
+        for (int x = 0; x < employees.size(); x++) {
+            Employee employee = employees.get(x);
+
+            if (uniqueRecords.add(employee) == false) {
+                employee.setIsDuplicate((byte) 1);
+                duplicateRecords.add(employee);
+            }
+        }
     }
 }

@@ -31,3 +31,8 @@ hs_err_pid*
 .idea/dataSources/8a43638c-c994-466a-aba9-8544432fab4f/storage_v2/_src_/schema/main.uQUzAA.meta
 .idea/dataSources/fac2daec-1fef-4330-817a-64e86a2daef9.xml
 .idea/sqldialects.xml
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/dataSources/5006b158-7d48-4ebc-af17-da4cbfdec281.xml
+.idea/dataSources/63b89b01-a5cf-461e-ad25-1b3885992f02.xml
+.idea/dataSources/63b89b01-a5cf-461e-ad25-1b3885992f02/storage_v2/_src_/schema/main.uQUzAA.meta

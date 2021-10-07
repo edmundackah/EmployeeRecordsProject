@@ -6,22 +6,16 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-        CSVReader csvReader = CSVReader.getInstance("src/main/EmployeeRecords.csv");
+        CSVReader csvReader = CSVReader.getInstance("src/main/EmployeeRecordsLarge.csv");
         int cores = Runtime.getRuntime().availableProcessors();
 
-        Set<Employee> uniqueRecords = new HashSet<>();
         List<Employee> records = csvReader.getRecords();
 
-        System.out.println(records.size());
-
-        //get only unique records
-        uniqueRecords.addAll(records);
-
-        System.out.println(uniqueRecords.size());
+        System.out.println(csvReader.getDuplicateRecords().size());
 
         JDBCDriver jdbcDriver = new JDBCDriver(1);
-        jdbcDriver.dropTable();
-        jdbcDriver.createTable();
-        jdbcDriver.writeRecords(records);
+        jdbcDriver.writeRecords(csvReader.getUniqueRecords().stream().toList());
+
+
     }
 }

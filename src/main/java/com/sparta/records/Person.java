@@ -39,8 +39,27 @@ public class Person {
                 '}';
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitle() {return title;}
+
+    public int getTitleID() {
+        switch (title) {
+            case "Mr":
+                return 1;
+            case "Mrs.":
+                return 2;
+            case "Ms.":
+                return 3;
+            case "Drs.":
+                return 4;
+            case "Dr.":
+                return 5;
+            case "Hon.":
+                return 6;
+            case "Prof.":
+                return 7;
+            default:
+                return 8;
+        }
     }
 
     public String getFirstName() {
@@ -60,6 +79,8 @@ public class Person {
     }
 
     public String getGender() {return Character.toString(gender);}
+
+    public int getGenderID() {return gender == 'F' ? 2 : 1;}
 
     public Date getDob() {
         return dob;
