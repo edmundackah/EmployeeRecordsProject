@@ -56,8 +56,6 @@ public class JDBCDriver {
                     " VALUES (?,?,?,?,?,?,?,?,?,?,?)"
     ));
 
-    //TODO: Add date type to database
-
     public JDBCDriver(int threadID) {
         this.threadID = threadID;
     }

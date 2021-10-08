@@ -2,6 +2,7 @@ package com.sparta.records;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 public class LoadBalancer {
     //get the number of threads supported by the host system
@@ -20,17 +21,21 @@ public class LoadBalancer {
         }
 
         //get slices to assign to threads
-        slices = getSlice();
+        if (PREFERRED_THREADS > 1) {
+            slices = getSlice();
+        }
     }
 
     public int getPreferredThreads() {
         return PREFERRED_THREADS;
     }
 
-    public void createWorkers() throws InterruptedException {
+    public List<ThreadResponse> createWorkers() throws InterruptedException {
         //TODO: System wide logging
         JDBCDriver jdbcDriver = new JDBCDriver(1);
         jdbcDriver.buildDBFromSchema();
+
+        List<ThreadResponse> callbacks = new ArrayList<>();
 
         if (PREFERRED_THREADS > 1) {
             List<DBWorker> workers = new ArrayList<>();
@@ -46,7 +51,7 @@ public class LoadBalancer {
             //print thread result
             res.stream().forEach((r) -> {
                 try {
-                    System.out.println(r.get().toString());
+                    callbacks.add(r.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -58,13 +63,9 @@ public class LoadBalancer {
                     .getInstance("src/main/EmployeeRecordsLarge.csv")
                     .getAllRecordsWithDuplicateID();
 
-
-            ThreadResponse res = jdbcDriver.writeRecords(list);
-
-            System.out.println(res);
+            callbacks.add(jdbcDriver.writeRecords(list));
         }
-
-        //spin up workers
+        return callbacks;
     }
 
     //creates a series of smaller lists from the main list
@@ -83,6 +84,15 @@ public class LoadBalancer {
         for (int i = 0; i < numRecords; i += (numRecords / PREFERRED_THREADS)) {
             slice.add(list.subList(i, Math.min(numRecords, (i + (numRecords / PREFERRED_THREADS)))));
         }
+
+        //add final list items to the one before it, as it has only a handle of records in it
+        List<Employee> temp = Stream.concat(
+                slice.get(slice.size() - 1).stream(),
+                slice.get(slice.size() - 2).stream()).toList();
+
+        slice.set((slice.size() - 2), temp);
+        //remove last element after concatenation
+        slice.remove(slice.size() - 1);
 
        return slice;
     }

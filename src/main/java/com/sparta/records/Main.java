@@ -20,13 +20,13 @@ public class Main {
          */
 
         try {
-            LoadBalancer loadBalancer = new LoadBalancer(LoadBalancer.Performance.MAX_PERFORMANCE);
+            LoadBalancer loadBalancer = new LoadBalancer(LoadBalancer.Performance.SINGLE_THREAD);
             long startTime = System.nanoTime();
             //System.out.println(loadBalancer.getPreferredThreads());
             //loadBalancer.getSlice().forEach((x) -> System.out.println(x.size()));
             loadBalancer.createWorkers();
             System.out.println("Whole operation took " + ((System.nanoTime() - startTime) / 1000000) + "ms to complete");
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
