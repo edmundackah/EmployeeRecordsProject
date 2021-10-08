@@ -28,7 +28,7 @@ public class EmployeeValidationException extends Exception {
 
         for (int i = 0; i < regexResults.size(); i++) {
             if (regexResults.get(i) == false) {
-                stringBuilder.append("\t" + VALIDATION_ERR_MESSAGES.get(i));
+                stringBuilder.append("\n\t" + VALIDATION_ERR_MESSAGES.get(i));
             }
         }
         return  stringBuilder.toString();

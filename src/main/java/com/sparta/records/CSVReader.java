@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,11 +62,11 @@ public class CSVReader {
                 //skip first line of CSV file (header info)
                 if (lineCount > 1) {
                     try {
-                        if (regexValidator.isValidEmployeeRecord(temp)) {
+                        if (regexValidator.isValidEmployeeRecord(temp) == true) {
                             employees.add(
                                     new Employee(temp[1], temp[2], temp[4], temp[6], temp[3].charAt(0),
-                                            temp[5].charAt(0), temp[7], Integer.parseInt(temp[0]),
-                                            Integer.parseInt(temp[9]), temp[8])
+                                            temp[5].charAt(0), parseDate(temp[7]), Integer.parseInt(temp[0]),
+                                            Integer.parseInt(temp[9]), parseDate(temp[8]))
                             );
                         } else badRecords.add(line);
 
@@ -95,5 +96,10 @@ public class CSVReader {
                 duplicateRecords.add(employee);
             }
         }
+    }
+
+    private static java.sql.Date parseDate(String dateString) throws ParseException {
+        java.util.Date dateOriginal = new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
+        return new java.sql.Date(dateOriginal.getTime());
     }
 }
