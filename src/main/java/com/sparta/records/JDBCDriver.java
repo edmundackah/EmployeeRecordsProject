@@ -10,42 +10,46 @@ import java.util.Map;
 public class JDBCDriver {
     private static int threadID;
     private static final int BATCH_SIZE = 1000;
-    //private static final String CONNECTION_STRING = "jdbc:sqlite:coffee.db";
-    private static final String CONNECTION_STRING = "jdbc:sqlite::memory:";
+    //login credentials should be handled with care in production application
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "sparta-global";
+    //private static final String CONNECTION_STRING = "jdbc:sqlite:coffee.db"; //jdbc:sqlite::memory:
+    private static final String CONNECTION_STRING = "jdbc:mysql://127.0.0.1:3306/EmployeeProject";
 
     private static final HashMap<String, String> QUERIES = new HashMap(Map.of(
+            "create database","CREATE DATABASE IF NOT EXISTS EmployeeProject;",
             "drop employees table" , "DROP TABLE IF EXISTS EmployeeRecords",
             "drop genders table", "DROP TABLE IF EXISTS Genders",
             "drop titles table", "DROP TABLE IF EXISTS Titles",
-            "create title table", "CREATE TABLE Titles (\n" +
-                    "\t\"titleID\"\tINTEGER NOT NULL,\n" +
-                    "\t\"title\" TEXT NOT NULL,\n" +
-                    "\tPRIMARY KEY(\"titleID\" AUTOINCREMENT)\n" +
+            "create title table", "CREATE TABLE IF NOT EXISTS Titles (\n" +
+                    "    titleID\tINT AUTO_INCREMENT NOT NULL,\n" +
+                    "    title VARCHAR(20) NOT NULL,\n" +
+                    "    PRIMARY KEY(titleID)\n" +
                     ");",
             "add titles", "INSERT INTO Titles (title) VALUES ('Mr.'), ('Mrs.')," +
                     " ('Ms.'), ('Drs.'), ('Dr.'), ('Hon.'), ('Prof.'), ('Mx');",
             "create genders table", "CREATE TABLE Genders (\n" +
-                    "\t\"genderID\" INTEGER NOT NULL,\n" +
-                    "\t\"gender\" VARCHAR(1) NOT NULL,\n" +
-                    "\tPRIMARY KEY(\"genderID\" AUTOINCREMENT)\n" +
+                    "    genderID TINYINT AUTO_INCREMENT NOT NULL,\n" +
+                    "    gender VARCHAR(5) NOT NULL,\n" +
+                    "    PRIMARY KEY(genderID)\n" +
                     ");",
-            "add genders", "INSERT INTO Genders (gender) VALUES (\"M\"), (\"F\")",
+            "add genders", "INSERT INTO Genders (gender) VALUES ('M'), ('F')",
             "create employee records table", "CREATE TABLE IF NOT EXISTS EmployeeRecords (\n" +
-                    "\t\"userID\"\tINTEGER NOT NULL,\n" +
-                    "\t\"employeeID\"\tINTEGER NOT NULL,\n" +
-                    "\t\"titleID\"\tTEXT NOT NULL,\n" +
-                    "\t\"firstName\"\tTEXT NOT NULL,\n" +
-                    "\t\"middleInitial\"\tTEXT,\n" +
-                    "\t\"lastName\"\tTEXT NOT NULL,\n" +
-                    "\t\"genderID\"\tVARCHAR(1) NOT NULL,\n" +
-                    "\t\"email\"\tTEXT,\n" +
-                    "\t\"dob\"\tDATE NOT NULL,\n" +
-                    "\t\"startDate\"\tDATE NOT NULL,\n" +
-                    "\t\"salary\"\tINTEGER NOT NULL,\n" +
-                    "\t\"isDuplicate\"\tINTEGER NOT NULL,\n" +
-                    "\tPRIMARY KEY(\"userID\" AUTOINCREMENT),\n" +
-                    "\tFOREIGN KEY (titleID) REFERENCES Titles (titleID),\n" +
-                    "\tFOREIGN KEY (genderID) REFERENCES Genders (genderID)\n" +
+                    "    userID\tINT AUTO_INCREMENT NOT NULL,\n" +
+                    "    employeeID\tINT NOT NULL,\n" +
+                    "    titleID\tINT NOT NULL,\n" +
+                    "    firstName\tVARCHAR(255) NOT NULL,\n" +
+                    "    middleInitial\tVARCHAR(20) NULL,\n" +
+                    "    lastName\tVARCHAR(255) NOT NULL,\n" +
+                    "    genderID\tTINYINT NOT NULL,\n" +
+                    "    email\tVARCHAR(255) NOT NULL,\n" +
+                    "    dob\tDATE NOT NULL,\n" +
+                    "    startDate\tDATE NOT NULL,\n" +
+                    "    salary\tINT NOT NULL,\n" +
+                    "    isDuplicate\tTINYINT NOT NULL,\n" +
+                    "    PRIMARY KEY(userID),\n" +
+                    "    FOREIGN KEY (titleID) REFERENCES Titles (titleID),\n" +
+                    "    FOREIGN KEY (genderID) REFERENCES Genders (genderID)\n" +
                     ");",
             "add employee record", "INSERT INTO EmployeeRecords (employeeID, titleID, firstName, \n" +
                     "middleInitial, lastName, genderID, email, dob, startDate,\n" +
@@ -62,19 +66,24 @@ public class JDBCDriver {
 
     private static void buildDBFromSchema() {
         long startTime = System.nanoTime();
-        try (Connection conn = DriverManager.getConnection(CONNECTION_STRING)) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD)) {
             Statement statement = conn.createStatement();
+
+            //create the mysql database
+            statement.execute(QUERIES.get("create database"));
 
             //drop the following tables if it exists in the database
             statement.execute(QUERIES.get("drop employees table"));
             statement.execute(QUERIES.get("drop genders table"));
             statement.execute(QUERIES.get("drop titles table"));
 
+
+
             //create new tables and insert data into it
-            statement.execute(QUERIES.get("create title table"));
-            statement.execute(QUERIES.get("add titles"));
             statement.execute(QUERIES.get("create genders table"));
             statement.execute(QUERIES.get("add genders"));
+            statement.execute(QUERIES.get("create title table"));
+            statement.execute(QUERIES.get("add titles"));
             statement.execute(QUERIES.get("create employee records table"));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,15 +91,13 @@ public class JDBCDriver {
         System.out.println("Took " + timeElapsed(startTime) + "ms to build DB");
     }
 
-    private static long timeElapsed(long startTime) {
-        return ((System.nanoTime() - startTime) / 1000000);
-    }
+    private static long timeElapsed(long startTime) { return ((System.nanoTime() - startTime) / 1000000);}
 
     public void writeRecords(List<Employee> records) {
         int count  = 0;
         long startTime = System.nanoTime();
 
-        try (Connection conn = DriverManager.getConnection(CONNECTION_STRING)) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD)) {
             conn.setAutoCommit(false);
             PreparedStatement pst = conn.prepareStatement(QUERIES.get("add employee record"));
 

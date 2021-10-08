@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.Objects;
 
+//TODO: Implement DAO pattern
+
 public class Employee extends Person {
     private int employeeID;
     private int salary = 0;
@@ -11,11 +13,11 @@ public class Employee extends Person {
     private Date startDate;
 
     public Employee(String title, String firstName, String lastName, String email, char initial,
-                    char gender, String dob, int employeeID, int salary, String startDate) throws ParseException {
+                    char gender, Date dob, int employeeID, int salary, Date startDate) throws ParseException {
         super(title, firstName, lastName, email, initial, gender, dob);
         this.employeeID = employeeID;
         this.salary = salary;
-        this.startDate = parseDate(startDate);
+        this.startDate = startDate;
     }
 
     public void setIsDuplicate(byte isDuplicate) {

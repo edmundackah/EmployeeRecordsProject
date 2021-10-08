@@ -11,19 +11,14 @@ public class Person {
 
 
     public Person(String title, String firstName, String lastName,
-                  String email, char initial, char gender, String dob) throws ParseException {
+                  String email, char initial, char gender, Date dob) throws ParseException {
         this.title = title == null ? "Mx" : title;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.initial = initial;
         this.gender = gender;
-        this.dob = parseDate(dob);
-    }
-
-    public static Date parseDate(String dateString) throws ParseException {
-        java.util.Date dob = new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
-        return new java.sql.Date(dob.getTime());
+        this.dob = dob;
     }
 
     @Override

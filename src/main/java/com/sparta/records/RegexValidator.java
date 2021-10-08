@@ -1,6 +1,8 @@
 package com.sparta.records;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,49 +28,54 @@ public class RegexValidator {
     }
 
     public boolean isValidEmployeeRecord(String[] data) throws EmployeeValidationException {
-        //boolean validData = true;
         List<Boolean> validationResults = new ArrayList();
 
-        validationResults.add(Integer.parseInt(data[0]) < 0);
+        validationResults.add(Integer.parseInt(data[0]) > 0);
 
         Matcher namePrefixMatcher = NAME_PREFIX_PATTERN.matcher(data[1]);
-        validationResults.add(!namePrefixMatcher.find());
+        validationResults.add(namePrefixMatcher.find());
 
         String firstName = data[2];
         Matcher firstNameMatcher = NAME_PATTERN.matcher(firstName);
-        validationResults.add((firstName.length() > 255 || !firstNameMatcher.find()));
+        validationResults.add((firstName.length() > 255 || firstNameMatcher.find()));
 
         String middleInitial = data[3];
         Matcher middleInitialMatcher = MIDDLE_INITIAL_PATTERN.matcher(middleInitial);
-        validationResults.add((middleInitial.length() > 1 || !middleInitialMatcher.find()));
+        validationResults.add((middleInitial.length() > 1 || middleInitialMatcher.find()));
 
         String lastName = data[4];
         Matcher lastNameMatcher = NAME_PATTERN.matcher(lastName);
-        validationResults.add((lastName.length() > 256 || !lastNameMatcher.find()));
+        validationResults.add((lastName.length() > 256 || lastNameMatcher.find()));
 
         Matcher genderMatcher = GENDER_PATTERN.matcher(data[5]);
-        validationResults.add((!genderMatcher.find()));
+        validationResults.add((genderMatcher.find()));
 
         Matcher emailMatcher = EMAIL_PATTERN.matcher(data[6]);
-        validationResults.add((!emailMatcher.find()));
+        validationResults.add((emailMatcher.find()));
 
         try {
-            Date.valueOf(data[7]);
-        } catch (IllegalArgumentException e) {
+            parseAndValidateDate(data[7]);
+        } catch (ParseException e) {
+            e.printStackTrace();
             validationResults.add(false);
         }
 
         try {
-            Date.valueOf(data[8]);
-        } catch (IllegalArgumentException e) {
+            parseAndValidateDate(data[8]);
+        } catch (ParseException e) {
             validationResults.add(false);
         }
 
-        validationResults.add((Integer.parseInt(data[9]) < 0));
+        validationResults.add((Integer.parseInt(data[9]) > 0));
 
         if (validationResults.contains(false))
             throw new EmployeeValidationException(validationResults);
 
         return true;
+    }
+
+    private static Date parseAndValidateDate(String dateString) throws ParseException {
+        java.util.Date dateOriginal = new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
+        return new java.sql.Date(dateOriginal.getTime());
     }
 }
