@@ -1,5 +1,7 @@
 package com.sparta.records;
 
+import org.apache.log4j.Logger;
+
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegexValidator {
+    private static String className = RegexValidator.class.getCanonicalName();
+    private static Logger logger = Logger.getLogger(className);
+
     private static RegexValidator instance;
 
     private static final Pattern NAME_PREFIX_PATTERN = Pattern.compile("[a-zA-Z]+\\.");
@@ -21,6 +26,7 @@ public class RegexValidator {
 
     //synchronized - To ensure thread safety
     public synchronized static RegexValidator getInstance() {
+        logger.debug("getting regex engine instance");
         if (instance == null) {
             instance = new RegexValidator();
         }
@@ -28,6 +34,7 @@ public class RegexValidator {
     }
 
     public boolean isValidEmployeeRecord(String[] data) throws EmployeeValidationException {
+        logger.debug("Starting regex validation of employee record");
         List<Boolean> validationResults = new ArrayList();
 
         validationResults.add(Integer.parseInt(data[0]) > 0);
@@ -56,13 +63,14 @@ public class RegexValidator {
         try {
             parseAndValidateDate(data[7]);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.fatal(e);
             validationResults.add(false);
         }
 
         try {
             parseAndValidateDate(data[8]);
         } catch (ParseException e) {
+            logger.fatal(e);
             validationResults.add(false);
         }
 
@@ -75,6 +83,7 @@ public class RegexValidator {
     }
 
     private static Date parseAndValidateDate(String dateString) throws ParseException {
+        logger.debug("validating the date object and converting to the MySQL date type");
         java.util.Date dateOriginal = new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
         return new java.sql.Date(dateOriginal.getTime());
     }

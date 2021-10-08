@@ -1,10 +1,15 @@
 package com.sparta.records;
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 
 public class DBWorker implements Callable<ThreadResponse> {
+    private static String className = DBWorker.class.getCanonicalName();
+    private static Logger logger = Logger.getLogger(className);
+
     private List<Employee> records;
     private int threadID;
 

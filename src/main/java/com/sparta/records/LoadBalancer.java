@@ -1,10 +1,15 @@
 package com.sparta.records;
 
+import org.apache.log4j.Logger;
+
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 public class LoadBalancer {
+    private static String className = LoadBalancer.class.getCanonicalName();
+    private static Logger logger = Logger.getLogger(className);
+
     //get the number of threads supported by the host system
     public enum Performance { SINGLE_THREAD, MAX_PERFORMANCE, BALANCED}
 
@@ -20,18 +25,17 @@ public class LoadBalancer {
             case MAX_PERFORMANCE -> PREFERRED_THREADS = AVAILABLE_THREADS;
         }
 
+        logger.debug("Migration tool will use " + PREFERRED_THREADS + " threads");
+
         //get slices to assign to threads
         if (PREFERRED_THREADS > 1) {
             slices = getSlice();
         }
     }
 
-    public int getPreferredThreads() {
-        return PREFERRED_THREADS;
-    }
+    public int getPreferredThreads() { return PREFERRED_THREADS; }
 
     public List<ThreadResponse> createWorkers() throws InterruptedException {
-        //TODO: System wide logging
         JDBCDriver jdbcDriver = new JDBCDriver(1);
         jdbcDriver.buildDBFromSchema();
 
@@ -39,6 +43,7 @@ public class LoadBalancer {
 
         if (PREFERRED_THREADS > 1) {
             List<DBWorker> workers = new ArrayList<>();
+            logger.debug("creating " + PREFERRED_THREADS + " worker objects");
             for (int x = 0; x < PREFERRED_THREADS; x++) {
                 workers.add(new DBWorker(slices.get(x), x));
             }
@@ -46,25 +51,29 @@ public class LoadBalancer {
             //thread pool created to match available processors
             ExecutorService executorService = Executors.newFixedThreadPool(PREFERRED_THREADS);
             //start all the workers.
+            logger.debug("Starting " + PREFERRED_THREADS + " threads");
             List<Future<ThreadResponse>> res = executorService.invokeAll(workers);
 
             //print thread result
             res.stream().forEach((r) -> {
                 try {
+                    logger.debug("Writing thread responses into callback array");
                     callbacks.add(r.get());
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    logger.fatal(e);
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
+                    logger.fatal(e);
                 }
             });
         } else {
+            logger.debug("Running in single threaded mode");
             List<Employee> list = CSVReader
                     .getInstance("src/main/EmployeeRecordsLarge.csv")
                     .getAllRecordsWithDuplicateID();
 
             callbacks.add(jdbcDriver.writeRecords(list));
         }
+        logger.debug("returning thread responses");
         return callbacks;
     }
 
@@ -73,6 +82,8 @@ public class LoadBalancer {
         //object responsible for providing access to the CSV file
         //records from the csv file including duplicates but with isDuplicate flag set to 1
         //poorly formatted records are not in this list
+        logger.debug("creating equal sub arrays for the worker objects");
+
         List<Employee> list = CSVReader
                 .getInstance("src/main/EmployeeRecordsLarge.csv")
                 .getAllRecordsWithDuplicateID();
@@ -94,7 +105,8 @@ public class LoadBalancer {
         //remove last element after concatenation
         slice.remove(slice.size() - 1);
 
-       return slice;
+        logger.debug("returning " + slice.size() + " sub lists");
+        return slice;
     }
 
 

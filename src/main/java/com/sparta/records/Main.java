@@ -1,33 +1,24 @@
 package com.sparta.records;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.Logger;
 
 public class Main {
+    private static String className = Main.class.getCanonicalName();
+    private static Logger logger = Logger.getLogger(className);
     public static void main(String[] args) {
-        /*
-        CSVReader csvReader = CSVReader.getInstance("src/main/EmployeeRecordsLarge.csv");
 
-        List<Employee> records = csvReader.getRecords();
+        PropertyConfigurator.configure("log4j.properties");
 
-        System.out.println(csvReader.getDuplicateRecords().size());
-
-        JDBCDriver jdbcDriver = new JDBCDriver(1);
-        ThreadResponse res = jdbcDriver.writeRecords(csvReader.getAllRecordsWithDuplicateID());
-
-        System.out.println(res);
-         */
+        logger.debug("Starting migration application");
 
         try {
-            LoadBalancer loadBalancer = new LoadBalancer(LoadBalancer.Performance.SINGLE_THREAD);
+            LoadBalancer loadBalancer = new LoadBalancer(LoadBalancer.Performance.MAX_PERFORMANCE);
             long startTime = System.nanoTime();
-            //System.out.println(loadBalancer.getPreferredThreads());
-            //loadBalancer.getSlice().forEach((x) -> System.out.println(x.size()));
-            loadBalancer.createWorkers();
-            System.out.println("Whole operation took " + ((System.nanoTime() - startTime) / 1000000) + "ms to complete");
+            loadBalancer.createWorkers().stream().forEach((t) -> System.out.println(t));
+            logger.debug("Whole operation took " + ((System.nanoTime() - startTime) / 1000000) + "ms to complete");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.fatal(e);
         }
 
 
