@@ -60,10 +60,9 @@ public class JDBCDriver {
 
     public JDBCDriver(int threadID) {
         this.threadID = threadID;
-        buildDBFromSchema();
     }
 
-    private static void buildDBFromSchema() {
+    public void buildDBFromSchema() {
         long startTime = System.nanoTime();
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD)) {
             Statement statement = conn.createStatement();

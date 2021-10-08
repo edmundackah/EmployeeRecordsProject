@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
+        /*
         CSVReader csvReader = CSVReader.getInstance("src/main/EmployeeRecordsLarge.csv");
 
         List<Employee> records = csvReader.getRecords();
@@ -13,7 +14,21 @@ public class Main {
         System.out.println(csvReader.getDuplicateRecords().size());
 
         JDBCDriver jdbcDriver = new JDBCDriver(1);
-        jdbcDriver.writeRecords(csvReader.getUniqueRecords().stream().toList());
+        ThreadResponse res = jdbcDriver.writeRecords(csvReader.getAllRecordsWithDuplicateID());
+
+        System.out.println(res);
+         */
+
+        try {
+            LoadBalancer loadBalancer = new LoadBalancer(LoadBalancer.Performance.MAX_PERFORMANCE);
+            long startTime = System.nanoTime();
+            //System.out.println(loadBalancer.getPreferredThreads());
+            System.out.println(loadBalancer.getSlice().size());
+            //loadBalancer.createWorkers();
+            System.out.println("Whole operation took " + ((System.nanoTime() - startTime) / 1000000) + "ms to complete");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
