@@ -10,6 +10,7 @@ public class LoadBalancer {
 
     public static void createWorkers() {
         //TODO: thread generators and response aggregator
+        //TODO: Explore enum for thread selector - have mem val db for storage
         //TODO: System wide logging
     }
 

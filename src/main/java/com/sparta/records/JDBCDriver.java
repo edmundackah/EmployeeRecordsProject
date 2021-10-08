@@ -1,6 +1,5 @@
 package com.sparta.records;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.Connection;
 import java.sql.*;
 import java.util.HashMap;
@@ -10,8 +9,8 @@ import java.util.Map;
 public class JDBCDriver {
     private static int threadID;
     private static final int BATCH_SIZE = 1000;
-    //private static final String CONNECTION_STRING = "jdbc:sqlite:coffee.db";
-    private static final String CONNECTION_STRING = "jdbc:sqlite::memory:";
+    private static final String CONNECTION_STRING = "jdbc:mysql://127.0.0.1:3306";
+    //private static final String CONNECTION_STRING = "jdbc:sqlite::memory:";
 
     private static final HashMap<String, String> QUERIES = new HashMap(Map.of(
             "drop employees table" , "DROP TABLE IF EXISTS EmployeeRecords",
