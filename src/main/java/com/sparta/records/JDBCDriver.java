@@ -1,6 +1,5 @@
 package com.sparta.records;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.Connection;
 import java.sql.*;
 import java.util.HashMap;
@@ -10,8 +9,8 @@ import java.util.Map;
 public class JDBCDriver {
     private static int threadID;
     private static final int BATCH_SIZE = 1000;
-    //private static final String CONNECTION_STRING = "jdbc:sqlite:coffee.db";
-    private static final String CONNECTION_STRING = "jdbc:sqlite::memory:";
+    private static final String CONNECTION_STRING = "jdbc:mysql://127.0.0.1:3306";
+    //private static final String CONNECTION_STRING = "jdbc:sqlite::memory:";
 
     private static final HashMap<String, String> QUERIES = new HashMap(Map.of(
             "drop employees table" , "DROP TABLE IF EXISTS EmployeeRecords",
@@ -86,7 +85,7 @@ public class JDBCDriver {
         return ((System.nanoTime() - startTime) / 1000000);
     }
 
-    public void writeRecords(List<Employee> records) {
+    public ThreadResponse writeRecords(List<Employee> records) {
         int count  = 0;
         long startTime = System.nanoTime();
 
@@ -125,10 +124,9 @@ public class JDBCDriver {
             pst.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            System.out.println("Thread " + threadID + " wrote " + count + " records to the database in");
-            System.out.println("Thread " + threadID + " took " + timeElapsed(startTime) + " ms");
         }
+
+        return new ThreadResponse(threadID, count, timeElapsed(startTime));
     }
 
 }

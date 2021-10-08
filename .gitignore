@@ -36,3 +36,7 @@ hs_err_pid*
 .idea/dataSources/5006b158-7d48-4ebc-af17-da4cbfdec281.xml
 .idea/dataSources/63b89b01-a5cf-461e-ad25-1b3885992f02.xml
 .idea/dataSources/63b89b01-a5cf-461e-ad25-1b3885992f02/storage_v2/_src_/schema/main.uQUzAA.meta
+.idea/dataSources/d25da56d-4a74-489f-a718-bb45587085f0.xml
+.idea/dataSources/d25da56d-4a74-489f-a718-bb45587085f0/storage_v2/_src_/schema/mysql.osA4Bg.meta
+.idea/dataSources/d25da56d-4a74-489f-a718-bb45587085f0/storage_v2/_src_/schema/performance_schema.kIw0nw.meta
+.idea/dataSources/d25da56d-4a74-489f-a718-bb45587085f0/storage_v2/_src_/schema/sys.zb4BAA.meta
