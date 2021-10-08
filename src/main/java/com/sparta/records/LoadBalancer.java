@@ -34,7 +34,7 @@ public class LoadBalancer {
 
         if (PREFERRED_THREADS > 1) {
             List<DBWorker> workers = new ArrayList<>();
-            for (int x = 0; x < slices.size(); x++) {
+            for (int x = 0; x < PREFERRED_THREADS; x++) {
                 workers.add(new DBWorker(slices.get(x), x));
             }
 
@@ -80,8 +80,8 @@ public class LoadBalancer {
         final int numRecords = list.size();
 
         //create equal slices for each thread to process
-        for (int i = 0; i < numRecords; i += PREFERRED_THREADS) {
-            slice.add(list.subList(i, Math.min(numRecords, i + PREFERRED_THREADS)));
+        for (int i = 0; i < numRecords; i += (numRecords / PREFERRED_THREADS)) {
+            slice.add(list.subList(i, Math.min(numRecords, (i + (numRecords / PREFERRED_THREADS)))));
         }
 
        return slice;

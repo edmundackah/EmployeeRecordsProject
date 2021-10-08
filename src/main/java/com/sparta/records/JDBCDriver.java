@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JDBCDriver {
-    private static int threadID;
+    private int threadID;
     private static final int BATCH_SIZE = 1000;
     //login credentials should be handled with care in production application
     private static final String USERNAME = "root";

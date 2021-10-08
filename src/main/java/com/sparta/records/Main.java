@@ -23,10 +23,10 @@ public class Main {
             LoadBalancer loadBalancer = new LoadBalancer(LoadBalancer.Performance.MAX_PERFORMANCE);
             long startTime = System.nanoTime();
             //System.out.println(loadBalancer.getPreferredThreads());
-            System.out.println(loadBalancer.getSlice().size());
-            //loadBalancer.createWorkers();
+            //loadBalancer.getSlice().forEach((x) -> System.out.println(x.size()));
+            loadBalancer.createWorkers();
             System.out.println("Whole operation took " + ((System.nanoTime() - startTime) / 1000000) + "ms to complete");
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
