@@ -1,5 +1,7 @@
 package com.sparta.records;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,6 +12,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CSVReader {
+    private static String className = CSVReader.class.getCanonicalName();
+    private static Logger logger = Logger.getLogger(className);
+
     private static CSVReader instance;
     private Set<Employee> uniqueRecords;
     private List<Employee> employees;
@@ -54,6 +59,7 @@ public class CSVReader {
         RegexValidator regexValidator = RegexValidator.getInstance();
 
         try (BufferedReader bf = new BufferedReader(new FileReader(path))) {
+            logger.debug("Reading employee records from " + path);
             String line;
             int lineCount = 1;
             while((line = bf.readLine()) != null) {
@@ -71,17 +77,17 @@ public class CSVReader {
                         } else badRecords.add(line);
 
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        logger.fatal(e);
                     } catch(NumberFormatException e) {
-                        e.printStackTrace();
+                        logger.fatal(e);
                     } catch (EmployeeValidationException e) {
-                        e.printStackTrace();
+                        logger.fatal(e);
                     }
                 }
                 lineCount++;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           logger.fatal(e);
         }
 
         //creating hashset
@@ -92,6 +98,7 @@ public class CSVReader {
             Employee employee = employees.get(x);
 
             if (uniqueRecords.add(employee) == false) {
+                logger.debug("marking record as duplicate | employeeID " + employee.getEmployeeID());
                 employee.setIsDuplicate((byte) 1);
                 duplicateRecords.add(employee);
             }
@@ -99,6 +106,7 @@ public class CSVReader {
     }
 
     private static java.sql.Date parseDate(String dateString) throws ParseException {
+        logger.debug("Converting date into MySQL date object. date: " + dateString);
         java.util.Date dateOriginal = new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
         return new java.sql.Date(dateOriginal.getTime());
     }

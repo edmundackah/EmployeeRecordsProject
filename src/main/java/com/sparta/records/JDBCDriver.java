@@ -1,5 +1,7 @@
 package com.sparta.records;
 
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.*;
 import java.util.HashMap;
@@ -7,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class JDBCDriver {
+    private static String className = JDBCDriver.class.getCanonicalName();
+    private static Logger logger = Logger.getLogger(className);
+
     private int threadID;
     private static final int BATCH_SIZE = 1000;
     //login credentials should be handled with care in production application
@@ -61,6 +66,8 @@ public class JDBCDriver {
     }
 
     public void buildDBFromSchema() {
+        logger.debug("building database");
+
         long startTime = System.nanoTime();
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD)) {
             Statement statement = conn.createStatement();
@@ -73,8 +80,6 @@ public class JDBCDriver {
             statement.execute(QUERIES.get("drop genders table"));
             statement.execute(QUERIES.get("drop titles table"));
 
-
-
             //create new tables and insert data into it
             statement.execute(QUERIES.get("create genders table"));
             statement.execute(QUERIES.get("add genders"));
@@ -82,14 +87,15 @@ public class JDBCDriver {
             statement.execute(QUERIES.get("add titles"));
             statement.execute(QUERIES.get("create employee records table"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.fatal(e);
         }
-        System.out.println("Took " + timeElapsed(startTime) + "ms to build DB");
+        logger.debug("Took " + timeElapsed(startTime) + "ms to build DB");
     }
 
     private static long timeElapsed(long startTime) { return ((System.nanoTime() - startTime) / 1000000);}
 
     public ThreadResponse writeRecords(List<Employee> records) {
+        logger.debug("Thread " + threadID + " is writing " + records.size() + " records to db");
         int count  = 0;
         long startTime = System.nanoTime();
 
@@ -119,7 +125,7 @@ public class JDBCDriver {
                     pst.addBatch();
                 }
                 if (b == records.size() -1 || b % BATCH_SIZE == 0) {
-                    System.out.println("\nCommitting batch: " + count);
+                    logger.debug("Committing batch: " + count + " | thread " + threadID);
                     pst.executeBatch();
                     conn.commit();
                 }
@@ -127,7 +133,7 @@ public class JDBCDriver {
 
             pst.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.fatal(e);
         }
 
         return new ThreadResponse(threadID, count, timeElapsed(startTime));
