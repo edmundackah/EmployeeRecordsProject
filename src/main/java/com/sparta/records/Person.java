@@ -2,13 +2,11 @@ package com.sparta.records;
 
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class Person {
     private String title, firstName, lastName, email;
     private char initial, gender;
     private Date dob;
-
 
     public Person(String title, String firstName, String lastName,
                   String email, char initial, char gender, Date dob) throws ParseException {

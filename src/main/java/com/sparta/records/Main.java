@@ -9,7 +9,6 @@ public class Main {
     public static void main(String[] args) {
 
         PropertyConfigurator.configure("log4j.properties");
-
         logger.debug("Starting migration application");
 
         try {
@@ -20,7 +19,5 @@ public class Main {
         } catch (Exception e) {
             logger.fatal(e);
         }
-
-
     }
 }

@@ -1,5 +1,8 @@
-package com.sparta.records;
+package com.sparta.records.util;
 
+import com.sparta.records.Employee;
+import com.sparta.records.EmployeeValidationException;
+import com.sparta.records.RegexValidator;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;

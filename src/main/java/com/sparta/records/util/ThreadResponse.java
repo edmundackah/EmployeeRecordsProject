@@ -1,4 +1,4 @@
-package com.sparta.records;
+package com.sparta.records.util;
 
 public class ThreadResponse implements Comparable {
     private final int id, records;
