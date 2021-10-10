@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="962.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sparta.records.view.MigrationManagerGUI">
+   <children>
+      <TabPane fx:id="systemTab" layoutX="-1.0" prefHeight="483.0" prefWidth="962.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="CSV">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="resultTable" layoutX="174.0" layoutY="59.0" prefHeight="378.0" prefWidth="781.0">
+                          <columns>
+                            <TableColumn fx:id="userIDCol" prefWidth="71.99993896484375" text="userID" />
+                            <TableColumn fx:id="employeeIDCol" prefWidth="110.40007019042969" text="employeeID" />
+                              <TableColumn fx:id="titleCol" prefWidth="79.199951171875" text="Title" />
+                              <TableColumn fx:id="firstNameCol" prefWidth="127.99993896484375" text="firstName" />
+                              <TableColumn fx:id="initialCol" prefWidth="96.79998779296875" text="Middle Initial" />
+                              <TableColumn fx:id="lastNameCol" prefWidth="143.99993896484375" text="Last Name" />
+                              <TableColumn fx:id="genderCol" prefWidth="87.199951171875" text="Gender" />
+                              <TableColumn fx:id="emailCol" prefWidth="75.0" text="E-mail" />
+                              <TableColumn fx:id="dobCol" prefWidth="75.0" text="d.o.b" />
+                              <TableColumn fx:id="startCol" prefWidth="75.0" text="Start Date" />
+                              <TableColumn fx:id="salaryCol" prefWidth="75.0" text="Salary" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="migrationBTN" layoutX="828.0" layoutY="16.0" mnemonicParsing="false"  onAction="#startMigration" prefHeight="30.0" prefWidth="127.0" text="Start Migration" />
+                        <ListView fx:id="summaryLST" layoutX="7.0" layoutY="61.0" prefHeight="375.0" prefWidth="154.0" />
+                        <ComboBox fx:id="perfMode" layoutX="643.0" layoutY="17.0" prefHeight="27.0" prefWidth="162.0" promptText="Performance Mode" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="logTab" text="System Logs">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="logTable" layoutX="14.0" layoutY="14.0" prefHeight="430.0" prefWidth="937.0">
+                          <columns>
+                            <TableColumn fx:id="levelCol" prefWidth="79.19997882843018" text="Level" />
+                            <TableColumn fx:id="timeStampCol" prefWidth="186.40003967285156" text="Timestamp" />
+                              <TableColumn fx:id="packageCol" minWidth="0.0" prefWidth="234.39996337890625" text="Package" />
+                              <TableColumn fx:id="methodCol" prefWidth="145.5999755859375" text="Method" />
+                              <TableColumn fx:id="logCol" prefWidth="292.0" text="log" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

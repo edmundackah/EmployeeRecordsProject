@@ -15,6 +15,34 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CSVReader {
+
+    public class ReadSummary {
+        private int records, uniqueRecords;
+        private List<Employee> duplicateRecords;
+        private List<String> badRecords;
+
+        public ReadSummary(int records, int uniqueRecords, List<Employee> duplicateRecords, List<String> badRecords) {
+            this.records = records;
+            this.uniqueRecords = uniqueRecords;
+            this.duplicateRecords = duplicateRecords;
+            this.badRecords = badRecords;
+        }
+
+        public int getNumBadRecords() { return badRecords == null ? 0 : badRecords.size(); }
+
+        public int getRecords() { return records; }
+
+        public int getUniqueRecords() { return uniqueRecords; }
+
+        public int getNumDuplicateRecords() { return duplicateRecords.size(); }
+
+        @Override
+        public String toString() {
+            return "CSV Summary:\n\tFound " + getUniqueRecords() + " records\n\tFound "
+                    + getNumDuplicateRecords() + " duplicate records\n\tFound "
+                    + getNumBadRecords() + " records with missing fields";
+        }
+    }
     private static String className = CSVReader.class.getCanonicalName();
     private static Logger logger = Logger.getLogger(className);
 
@@ -28,7 +56,7 @@ public class CSVReader {
 
     private CSVReader(String path) {
         this.path = path;
-        parseRecordsFromCSV();
+        System.out.println(parseRecordsFromCSV());;
     }
 
     public static CSVReader getInstance(String path) {
@@ -57,7 +85,7 @@ public class CSVReader {
                 .collect(Collectors.toList());
     }
 
-    private void parseRecordsFromCSV() {
+    public ReadSummary parseRecordsFromCSV() {
         employees = new ArrayList<>();
         RegexValidator regexValidator = RegexValidator.getInstance();
 
@@ -106,6 +134,8 @@ public class CSVReader {
                 duplicateRecords.add(employee);
             }
         }
+
+        return new ReadSummary(employees.size(), uniqueRecords.size(), duplicateRecords, badRecords);
     }
 
     private static java.sql.Date parseDate(String dateString) throws ParseException {

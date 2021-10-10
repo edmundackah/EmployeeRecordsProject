@@ -67,7 +67,8 @@ public class JDBCDriver {
     }
 
     public void buildDBFromSchema() {
-        logger.debug("building database");
+        System.out.println("building database please wait...\n");
+        logger.debug("building database please wait...");
 
         long startTime = System.nanoTime();
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD)) {
@@ -90,6 +91,7 @@ public class JDBCDriver {
         } catch (SQLException e) {
             logger.fatal(e);
         }
+        System.out.println("Took " + timeElapsed(startTime) + "ms to build DB");
         logger.debug("Took " + timeElapsed(startTime) + "ms to build DB");
     }
 
@@ -127,6 +129,7 @@ public class JDBCDriver {
                 }
                 if (b == records.size() -1 || b % BATCH_SIZE == 0) {
                     logger.debug("Committing batch: " + count + " | thread " + threadID);
+                    System.out.println("Committing batch: " + count + " | thread " + threadID);
                     pst.executeBatch();
                     conn.commit();
                 }
