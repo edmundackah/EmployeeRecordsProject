@@ -1,8 +1,6 @@
 package com.sparta.records.util;
 
-import com.sparta.records.Employee;
-import com.sparta.records.EmployeeValidationException;
-import com.sparta.records.RegexValidator;
+import com.sparta.records.models.Employee;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -56,7 +54,6 @@ public class CSVReader {
 
     private CSVReader(String path) {
         this.path = path;
-        System.out.println(parseRecordsFromCSV());;
     }
 
     public static CSVReader getInstance(String path) {

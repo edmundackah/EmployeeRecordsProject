@@ -4,12 +4,13 @@ module com.spartaglobal {
     requires log4j;
     requires java.sql;
 
-    exports com.sparta.records;
-    opens com.sparta.records to javafx.graphics;
-
     opens com.sparta.records.view to javafx.fxml;
     exports com.sparta.records.view;
 
     exports com.sparta.records.util;
-    opens com.sparta.records.util to javafx.fxml;
+    opens com.sparta.records.util to javafx.fxml, javafx.graphics;
+    exports com.sparta.records.models;
+    opens com.sparta.records.models to javafx.graphics;
+    exports com.sparta.records.controller;
+    opens com.sparta.records.controller to javafx.fxml, javafx.graphics;
 }

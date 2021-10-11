@@ -1,4 +1,4 @@
-package com.sparta.records;
+package com.sparta.records.models;
 
 import java.sql.Date;
 import java.text.ParseException;

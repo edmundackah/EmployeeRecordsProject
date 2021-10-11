@@ -1,4 +1,4 @@
-package com.sparta.records;
+package com.sparta.records.util;
 
 import org.apache.log4j.Logger;
 

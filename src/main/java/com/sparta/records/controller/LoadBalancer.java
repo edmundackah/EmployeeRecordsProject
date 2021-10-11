@@ -1,6 +1,7 @@
-package com.sparta.records;
+package com.sparta.records.controller;
 
-import com.sparta.records.util.CSVReader;
+import com.sparta.records.models.DBWorker;
+import com.sparta.records.models.Employee;
 import com.sparta.records.util.ThreadResponse;
 import org.apache.log4j.Logger;
 
