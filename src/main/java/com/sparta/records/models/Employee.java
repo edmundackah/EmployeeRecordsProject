@@ -16,7 +16,7 @@ public class Employee extends Person {
                     char gender, Date dob, int employeeID, int salary, Date startDate) throws ParseException {
         super(title, firstName, lastName, email, initial, gender, dob);
         this.employeeID = employeeID;
-        this.salary = salary;
+        this.salary = salary < 1 ? 1 : salary;
         this.startDate = startDate;
     }
 
@@ -57,9 +57,7 @@ public class Employee extends Person {
         return employeeID;
     }
 
-    public int getSalary() {
-        return salary;
-    }
+    public int getSalary() { return salary; }
 
     public Date getStartDate() {
         return startDate;

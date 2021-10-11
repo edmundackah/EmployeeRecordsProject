@@ -5,7 +5,8 @@ import java.text.ParseException;
 
 public class Person {
     private String title, firstName, lastName, email;
-    private char initial, gender;
+    private char initial;
+    private char gender;
     private Date dob;
 
     public Person(String title, String firstName, String lastName,
