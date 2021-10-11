@@ -29,7 +29,7 @@ This project was designed to demonstrate the use of JDBC to connect to a databas
 
 The data migration process is started by running the `JavaFxApp` class in the view package. Once the GUI has launched, the user can click on the run migration button to start reading the CSV files.
 
-![Screenshot 2021-10-11 003647.png](images/Screenshot_2021-10-11_003647.png)
+![Screenshot 2021-10-11 003647.png](images/Screenshot%202021-10-11%20003647.png)
 
 As migrating a vast amount of data from a CSV file into a database is a time consuming activity, the migration application is equipped with three performance profiles to help in addressing this problem.
 
