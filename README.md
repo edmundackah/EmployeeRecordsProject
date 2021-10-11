@@ -60,11 +60,11 @@ As migrating a vast amount of data from a CSV file into a database is a time con
 
 At runtime the system will query the operating system to find out how many threads the host CPU supports.  If the performance profile is set to balance, provided the system has more than 2 threads available, the migration tool will use the available threads - 2 for data migration. This done to not hinder the database server and host OS. Performance mode is a more aggressive mode that uses all available thread in order to maximise performance.
 
-![Screenshot 2021-10-11 003821.png](images/Screenshot_2021-10-11_003821.png)
+![Screenshot 2021-10-11 003821.png](images/Screenshot%202021-10-11%20003821.png)
 
 Using 12 threads, the database was sanitised and migrated to MySQL in under 10 seconds on core i7 mobile processors.
 
-![Screenshot 2021-10-11 011421.png](images/Screenshot_2021-10-11_011421.png)
+![Screenshot 2021-10-11 011421.png](images/Screenshot%202021-10-11%20011421.png)
 
 Sanitised records from the CSV
 
@@ -72,7 +72,7 @@ Sanitised records from the CSV
 
 All good applications need a robust set of logs to aid debugging. The system logs tab of the GUI shows all the logs recorded by the application. The logs can be sorted by severity, time and source package to name a few.
 
-![Screenshot 2021-10-11 011546.png](images/Screenshot_2021-10-11_011546.png)
+![Screenshot 2021-10-11 011546.png](images/Screenshot%202021-10-11%20011546.png)
 
 ## 3. Further Work <a name="further_work"></a>
 
