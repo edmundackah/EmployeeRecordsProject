@@ -58,7 +58,7 @@ public class LogReader {
         return instance == null ? new LogReader() : instance;
     }
 
-    public static ObservableList<LogEntry> getSystemLogs() {
+    public ObservableList<LogEntry> getSystemLogs() {
         ObservableList<LogEntry> logs = FXCollections.observableArrayList();
         Scanner linReader = null;
 
