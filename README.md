@@ -1,6 +1,6 @@
 # CSV Data Migration Project
 
-This project was designed to demonstrate the use of JDBC to connect to a database and and the query the database. Moreover, this artefact shows how data can be read from a CSV file and sanitised. Moreover, concurrency was used in the data migration process to reduce the time required to write over 65,00 records
+This project was designed to demonstrate the use of JDBC to connect to a database and and the query the database. Moreover, this artefact shows how data can be read from a CSV file and sanitised. Moreover, concurrency was used in the data migration process to reduce the time required to write over 65,000 records
 
 # Table of Contents
 1. [Migration Tool](#migration_tool)
